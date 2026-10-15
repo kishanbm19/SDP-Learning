@@ -6,156 +6,238 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task App</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        background:
+            radial-gradient(ellipse at top left, #263b70 0%, transparent 45%),
+            linear-gradient(135deg, #0f172a, #111827 60%, #1e1b4b);
+        color: #e5e7eb;
+    }
+
+    main {
+        width: 100%;
+        max-width: 620px;
+        padding: 32px;
+        background: rgba(30, 41, 59, 0.88);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 24px;
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(16px);
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        font-size: clamp(28px, 5vw, 38px);
+        font-weight: 800;
+        letter-spacing: -1px;
+        background: linear-gradient(90deg, #67e8f9, #a78bfa);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        margin-bottom: 8px;
+    }
+
+    header::after {
+        content: "Plan less. Accomplish more.";
+        display: block;
+        margin-top: 8px;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    #task-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    #task-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    #task-input {
+        flex: 1;
+        min-width: 0;
+        padding: 15px 16px;
+        background: #0f172a;
+        color: #f8fafc;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    #task-input::placeholder {
+        color: #64748b;
+    }
+
+    #task-input:focus {
+        border-color: #818cf8;
+        box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
+    }
+
+    button {
+        padding: 13px 19px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.12);
+        box-shadow: 0 7px 20px rgba(99, 102, 241, 0.25);
+    }
+
+    button:active {
+        transform: scale(0.97);
+    }
+
+    .task {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 15px;
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid #334155;
+        border-left: 4px solid #818cf8;
+        border-radius: 14px;
+        transition: border-color 0.2s, background 0.2s;
+    }
+
+    .task:hover {
+        border-color: #6366f1;
+        background: #1e293b;
+    }
+
+    .task-title {
+        flex: 1;
+        min-width: 100px;
+        overflow-wrap: anywhere;
+        color: #e2e8f0;
+        font-size: 15px;
+    }
+
+    .task-done {
+        text-decoration: line-through;
+        color: #4ade80;
+        opacity: 0.75;
+    }
+
+    .task-button {
+        padding: 8px 11px;
+        font-size: 12px;
+        border-radius: 9px;
+    }
+
+    .delete-button {
+        background: #991b1b;
+    }
+
+    .delete-button:hover {
+        background: #dc2626;
+    }
+
+    .container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 18px;
+        margin-top: 12px;
+        border: 1px solid rgba(129, 140, 248, 0.2);
+        border-radius: 14px;
+        background: rgba(99, 102, 241, 0.09);
+        color: #c4b5fd;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    #message {
+        width: 100%;
+        color: #4ade80;
+        font-size: 13px;
+        font-weight: 400;
+    }
+
+    button:focus-visible,
+    #task-input:focus-visible {
+        outline: 2px solid #67e8f9;
+        outline-offset: 3px;
+    }
+
+    @media (max-width: 480px) {
         body {
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 14px;
+            align-items: flex-start;
         }
 
         main {
-            width: 100%;
-            max-width: 550px;
-            padding: 30px;
-            background: #fff;
+            margin-top: 20px;
+            padding: 22px 18px;
             border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        h1 {
-            font-size: 32px;
-            color: #4f46e5;
-        }
-
-        #task-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
         }
 
         #task-input {
-            flex: 1;
-            min-width: 0;
-            padding: 14px;
-            font-size: 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            outline: none;
+            flex-basis: 100%;
         }
 
-        #task-input:focus {
-            border-color: #667eea;
-        }
-
-        button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-        }
-
-        #task-list {
-            margin-bottom: 20px;
+        #task-form > button {
+            width: 100%;
         }
 
         .task {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            background: #f3f4f6;
-            border-left: 4px solid #667eea;
-        }
-
-        .task-title {
-            flex: 1;
-            overflow-wrap: anywhere;
-        }
-
-        .task-done {
-            text-decoration: line-through;
-            color: #15803d;
+            gap: 8px;
+            padding: 12px;
         }
 
         .task-button {
-            padding: 7px 10px;
-            font-size: 12px;
-        }
-
-        .delete-button {
-            background: #dc2626;
+            padding: 8px;
         }
 
         .container {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-direction: column;
             padding: 15px;
-            margin-top: 10px;
-            border-radius: 12px;
-            background: #f5f3ff;
-            color: #4f46e5;
-            font-size: 14px;
-            font-weight: bold;
         }
+    }
 
-        #message {
-            width: 100%;
-            font-size: 14px;
-            font-weight: normal;
-            color: #15803d;
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            transition: none !important;
         }
+    }
+</style>
 
-        @media (max-width: 480px) {
-            main {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 26px;
-            }
-
-            #task-input {
-                flex-basis: 100%;
-            }
-
-            #task-form > button {
-                width: 100%;
-            }
-
-            .container {
-                flex-direction: column;
-            }
-        }
-    </style>
 </head>
 
 <body>
